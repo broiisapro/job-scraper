@@ -22,6 +22,7 @@ Production-quality Python job scraper built with:
 
 ### Create virtual environment
 
+
 ```bash
 python3.12 -m venv .venv
 source .venv/bin/activate
