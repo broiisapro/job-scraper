@@ -1,0 +1,5 @@
+sites:
+  example:
+    name: "Example Site"
+    base_url: "https://httpbin.org/html"
+    type: "simple"
