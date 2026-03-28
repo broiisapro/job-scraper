@@ -1,8 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-DATABASE_URL = "postgresql+psycopg2://scraper:scraper@localhost:5432/jobs"
+from config.settings import settings
 
-engine = create_engine(DATABASE_URL, echo=False)
+
+engine = create_engine(settings.database_url, echo=False)
 
 SessionLocal = sessionmaker(bind=engine)
