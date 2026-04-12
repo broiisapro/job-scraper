@@ -17,7 +17,7 @@ class SimpleScraper(BaseScraper):
             browser = await p.chromium.launch(headless=True)
             page = await browser.new_page()
 
-            await page.goto(self.base_url)
+            await page.goto(self.base_url, timeout=60000)
             content = await page.content()
 
             await browser.close()
