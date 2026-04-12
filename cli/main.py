@@ -10,6 +10,7 @@ from scrapers.simple import SimpleScraper
 from scrapers.stealth import StealthScraper
 from db.queries import upsert_jobs
 
+from db.queries import upsert_jobs, get_jobs
 
 app = typer.Typer()
 console = Console()
@@ -66,6 +67,49 @@ def run() -> None:
 
     console.print(f"[green]Done. Total new jobs: {total_inserted}[/green]")
 
+@app.command()
+def search(limit: int = 10):
+    """
+    Search stored jobs.
+    """
+    jobs = get_jobs(limit)
+
+    if not jobs:
+        console.print("[red]No jobs found.[/red]")
+        return
+
+    for job in jobs:
+        console.print(f"[bold]{job.title}[/bold]")
+        console.print(f"{job.company} | {job.location}")
+        console.print(f"{job.url}")
+        console.print("-" * 40)
+
+import json
+
+
+@app.command()
+def export(file: str = "jobs.json"):
+    """
+    Export jobs to JSON file.
+    """
+    jobs = get_jobs(100)
+
+    data = [
+        {
+            "title": job.title,
+            "company": job.company,
+            "location": job.location,
+            "url": job.url,
+            "description": job.description,
+            "source": job.source,
+        }
+        for job in jobs
+    ]
+
+    with open(file, "w") as f:
+        json.dump(data, f, indent=2)
+
+    console.print(f"[green]Exported {len(data)} jobs to {file}[/green]")
 
 if __name__ == "__main__":
     app()
