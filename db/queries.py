@@ -36,3 +36,21 @@ def upsert_jobs(jobs: List[Dict]) -> int:
 
     finally:
         session.close()
+
+from sqlalchemy import select
+
+
+def get_jobs(limit: int = 10):
+    """
+    Fetch jobs from the database.
+    """
+    session = SessionLocal()
+
+    try:
+        stmt = select(Job).limit(limit)
+        result = session.execute(stmt)
+
+        return [row[0] for row in result.fetchall()]
+
+    finally:
+        session.close()
