@@ -1,5 +1,4 @@
 import pytest
-import asyncio
 
 from scrapers.simple import SimpleScraper
 from scrapers.stealth import StealthScraper

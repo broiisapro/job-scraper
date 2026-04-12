@@ -1,5 +1,5 @@
 import asyncio
-from typing import List
+import json
 
 import typer
 from rich.console import Console
@@ -8,9 +8,8 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 from config.loader import load_sites_config
 from scrapers.simple import SimpleScraper
 from scrapers.stealth import StealthScraper
-from db.queries import upsert_jobs
-
 from db.queries import upsert_jobs, get_jobs
+
 
 app = typer.Typer()
 console = Console()
@@ -57,7 +56,6 @@ def run() -> None:
 
             scraper = get_scraper(scraper_type, base_url)
 
-            # ✅ Correct async execution
             jobs = asyncio.run(scraper.run())
 
             inserted = upsert_jobs(jobs)
@@ -66,6 +64,7 @@ def run() -> None:
             progress.update(task, description=f"{name} complete ({inserted} new jobs)")
 
     console.print(f"[green]Done. Total new jobs: {total_inserted}[/green]")
+
 
 @app.command()
 def search(limit: int = 10):
@@ -83,8 +82,6 @@ def search(limit: int = 10):
         console.print(f"{job.company} | {job.location}")
         console.print(f"{job.url}")
         console.print("-" * 40)
-
-import json
 
 
 @app.command()
@@ -110,6 +107,7 @@ def export(file: str = "jobs.json"):
         json.dump(data, f, indent=2)
 
     console.print(f"[green]Exported {len(data)} jobs to {file}[/green]")
+
 
 if __name__ == "__main__":
     app()

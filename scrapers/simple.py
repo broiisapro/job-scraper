@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import List
 from playwright.async_api import async_playwright
 
 from scrapers.base import BaseScraper
@@ -27,7 +27,6 @@ class SimpleScraper(BaseScraper):
         """
         Placeholder parser (to be improved later).
         """
-        # For now, return dummy data
         return [
             {
                 "title": "Example Job",
@@ -44,5 +43,4 @@ class SimpleScraper(BaseScraper):
         Execute full scraping pipeline.
         """
         raw_data = await self.fetch()
-        jobs = self.parse(raw_data)
-        return jobs
+        return self.parse(raw_data)
