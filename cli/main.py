@@ -10,6 +10,9 @@ from scrapers.simple import SimpleScraper
 from scrapers.stealth import StealthScraper
 from db.queries import upsert_jobs, get_jobs
 
+from sqlalchemy import func
+from db.session import SessionLocal
+from db.models import Job
 
 app = typer.Typer()
 console = Console()
@@ -26,6 +29,25 @@ def get_scraper(scraper_type: str, base_url: str):
     else:
         raise ValueError(f"Unknown scraper type: {scraper_type}")
 
+@app.command()
+def stats():
+    """
+    Show statistics about stored jobs.
+    """
+    session = SessionLocal()
+
+    try:
+        total = session.query(func.count(Job.id)).scalar()
+        sources = session.query(Job.source, func.count()).group_by(Job.source).all()
+
+        console.print(f"[bold]Total jobs:[/bold] {total}")
+
+        console.print("\n[bold]Jobs by source:[/bold]")
+        for source, count in sources:
+            console.print(f"{source}: {count}")
+
+    finally:
+        session.close()
 
 @app.command()
 def run() -> None:
