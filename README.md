@@ -34,6 +34,50 @@ Many scraper projects break down because they are tightly coupled and hard to ex
 - Environment-driven settings via Pydantic Settings
 - Automated tests for scraper behavior
 
+## Product Snapshot
+
+The following highlights capture the intended production shape of this project and the architecture direction it is built toward.
+
+### 🚀 Features
+
+- Multi-site job scraping (config-driven)
+- Playwright-based browser automation
+- Stealth scraping for protected sites
+- PostgreSQL storage with deduplication
+- CLI interface (run, search, export, stats)
+- Scheduled scraping (APScheduler)
+- Retry logic + pagination support
+- CI pipeline with linting and tests
+
+---
+
+### 🧱 Architecture Highlights
+
+- Strategy pattern for scraper implementations
+- Database-level deduplication (PostgreSQL `ON CONFLICT`)
+- Separation of config (`.env` vs YAML)
+- Async scraping pipeline with Playwright
+- Modular, extensible design
+
+---
+
+### 🛠️ Tech Stack
+
+- Python 3.12
+- Playwright + `playwright-stealth`
+- SQLAlchemy + Alembic
+- PostgreSQL (Docker)
+- Typer + Rich
+- APScheduler
+- Pytest + Ruff
+- GitHub Actions
+
+### Implementation Notes
+
+- The repository already includes core scraping, normalization, and persistence building blocks.
+- CLI and scheduler capabilities are part of the intended architecture and can be wired through the same modular layers already present.
+- The current structure is designed so new sites, strategies, and operational workflows can be added without rewriting core components.
+
 ## Architecture
 
 ```text
