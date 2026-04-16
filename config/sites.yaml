@@ -3,3 +3,11 @@ sites:
     name: "Example Site"
     base_url: "https://httpbin.org/html"
     type: "simple"
+    pagination: true
+    max_pages: 3
+
+  stealth_example:
+    name: "Stealth Example"
+    base_url: "https://httpbin.org/html"
+    type: "stealth"
+    pagination: false
